@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모카의 미니홈</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(1rem, 5vw, 4rem);
+      background-color: #141c30;
+      background-image: radial-gradient(#a5b6df28 1px, transparent 1px);
+      background-size: 16px 16px;
+      color: #282332;
+      font: 1rem/1.65 "Noto Sans KR", "Noto Sans CJK KR", "Noto Sans", "맑은 고딕", "Apple SD Gothic Neo", system-ui, sans-serif;
+      overflow-wrap: anywhere;
+    }
+    h1, h2, p, figure { margin: 0; }
+    main {
+      max-width: 64rem;
+      margin: auto;
+      overflow: hidden;
+      border: 2px solid #9abba9;
+      border-radius: 1.25rem;
+      background: linear-gradient(#d1f1f4, #fff4df 22rem);
+      box-shadow: 0 18px 60px #06091291;
+    }
+    header {
+      padding-bottom: 1.25rem;
+      border-bottom: 1px dashed #ad896c;
+    }
+    h1 { color: #533747; font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.15; }
+    header p { margin-top: .65rem; }
+    section { margin-top: 1.4rem; }
+    h2 { font-size: 1.2rem; color: #533747; margin-bottom: .65rem; }
+
+    /* 방 안의 소품을 같은 비율로 줄여 좁은 화면에도 방 전체를 보여 줍니다. */
+    .방 {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      container-type: inline-size;
+      border: 3px solid #624755;
+      border-radius: .65rem;
+      background:
+        repeating-linear-gradient(100deg, transparent 0 11%, #5e303543 11% 11.5%) bottom / 100% 28% no-repeat,
+        linear-gradient(#58445f 0 70%, #edac76 70% 72%, #a86a53 72%);
+    }
+    .방 > * { position: absolute; }
+    .전구 {
+      inset: 3% 0 auto;
+      height: 10%;
+      border-top: 1px solid #f9d3a67a;
+      background: radial-gradient(circle at 50% 28%, #ffedac 0 10%, #ffbd6770 18%, transparent 37%) 0 0 / 8% 100% repeat-x;
+    }
+    .창문 {
+      top: 15%; left: 35%; width: 30%; height: 38%;
+      border: .8cqw solid #eabc93;
+      border-radius: 42% 42% .5rem .5rem;
+      background:
+        linear-gradient(90deg, transparent 48%, #eabc93 48% 52%, transparent 52%),
+        linear-gradient(transparent 57%, #eabc93 57% 62%, transparent 62%),
+        radial-gradient(circle, #f4f0ff 0 11%, transparent 13%) 0 0 / 23% 25%,
+        linear-gradient(#1c2d54, #586991);
+      box-shadow: 0 0 1.5cqw #efba8355;
+    }
+    .풍경 {
+      top: 22%; left: 8%; width: 19%; height: 24%;
+      transform: rotate(-7deg);
+      border: 1cqw solid #ffe5bf;
+      background: radial-gradient(circle at 70% 35%, #fff2a5 11%, transparent 12%), linear-gradient(#ae79a1, #f6a37d);
+      box-shadow: 0 .5cqw 0 #32263775;
+      overflow: hidden;
+    }
+    .풍경::after {
+      content: "";
+      position: absolute;
+      inset: 28% 0 0;
+      background: #575477;
+      clip-path: polygon(0 65%, 27% 18%, 53% 70%, 77% 30%, 100% 73%, 100% 100%, 0 100%);
+    }
+    .선반 {
+      inset: 47% 7% auto auto;
+      width: 22%; height: 2%;
+      background: #d3926a;
+      box-shadow: 0 .45cqw 0 #6d4551;
+    }
+    .책 {
+      inset: 27% 8% auto auto;
+      width: 18%; height: 20%;
+      border-bottom: .5cqw solid #fff1be;
+      background: repeating-linear-gradient(90deg, #d47f74 0 15%, #553b56 15% 19%, #f2c175 19% 34%, #553b56 34% 38%, #83a294 38% 54%);
+    }
+    .책상, .게임탁자 {
+      bottom: 15%; height: 5%;
+      border-radius: .5cqw;
+      background: #edba88;
+      box-shadow: 0 .7cqw 0 #6d4551;
+    }
+    .책상 { left: 7%; width: 33%; }
+    .게임탁자 { right: 6%; width: 37%; }
+    .책상::before, .게임탁자::before {
+      content: "";
+      position: absolute;
+      inset: 100% 7% auto;
+      height: 7cqw;
+      border-inline: 1cqw solid #683f45;
+    }
+    .소품 {
+      line-height: 1;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+      filter: drop-shadow(0 .6cqw .25cqw #2b1b3466);
+    }
+    .카메라 { left: 9%; bottom: 20%; font-size: 8cqw; }
+    .노트북 { left: 19%; bottom: 19%; font-size: 11cqw; }
+    .커피 { left: 32%; bottom: 20%; font-size: 7cqw; }
+    .주사위 { right: 7%; bottom: 19%; font-size: 9cqw; }
+    .폰 { right: 26%; bottom: 20%; font-size: 8cqw; color: #fff4df; }
+    .게임판 {
+      right: 16%; bottom: 18%; width: 19%; aspect-ratio: 2 / 1;
+      transform: skewX(-18deg);
+      border: .65cqw solid #ffe0a6;
+      border-radius: .5cqw;
+      background: conic-gradient(#d28d78 25%, #fff0ca 0 50%, #d28d78 0 75%, #fff0ca 0) 0 0 / 25% 50%;
+    }
+    .러그 {
+      left: 35%; bottom: 3%; width: 30%; height: 13%;
+      border: .6cqw solid #f1b292;
+      border-radius: 50%;
+      background: repeating-linear-gradient(90deg, #9e5367 0 12%, #bd6977 12% 24%);
+    }
+    .취미 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .6rem;
+      list-style: none;
+      margin: .8rem 0 0;
+      padding: 0;
+    }
+    .취미 li {
+      padding: .55rem .75rem;
+      border: 1px solid #d9b996;
+      border-radius: .45rem;
+      background: #fffbf3;
+    }
+    @media (max-width: 34rem) {
+      .취미 { grid-template-columns: 1fr; }
+    }
+    .창제목 { padding: .5rem 1rem; border-bottom: 1px solid #789d65; color: #294321; font-weight: 800; background: linear-gradient(#ecfbba, #a8cf5d 52%, #d4ec9a); }
+    .창제목::before { content: "●"; margin-right: .5em; color: #52782c; }
+    .창내용 { padding: clamp(.75rem, 3vw, 1.75rem); }
+    .방도구 { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; margin-bottom: .65rem; }
+    .방도구 h2 { margin: 0; }
+    button { padding: .4rem .75rem; border: 1px solid #6e8b61; border-radius: .45rem; background: linear-gradient(#fbffea, #deefab); color: #264025; font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #32738a; outline-offset: 2px; }
+
+    /* 작은 소품과 눈이 서로 다른 속도로 움직입니다. */
+    .창문 { overflow: hidden; }
+    .창문::after { content: ""; position: absolute; inset: -25% 0 0; background: radial-gradient(circle, #fff 0 9%, transparent 11%) 0 0 / 17% 20%; opacity: .7; animation: 눈 3s linear infinite; }
+    .전구 { animation: 빛 3s ease-in-out infinite alternate; }
+    .카메라 { animation: 흔들림 4s ease-in-out infinite; }
+    .노트북 { animation: 화면빛 3s ease-in-out infinite alternate; }
+    .커피::after { content: "〰"; position: absolute; left: 25%; top: -30%; color: #fff3d7; font-size: 3cqw; animation: 김 2s ease-out infinite; }
+    .주사위 { animation: 주사위 3s ease-in-out infinite; }
+    .폰 { animation: 게임말 4s ease-in-out infinite; }
+
+    /* 몸통은 방향을 바꾸고 두 발은 번갈아 움직입니다. */
+    .모카 { left: 12%; bottom: 4%; width: 9cqw; height: 15cqw; animation: 걷기 14s linear infinite; }
+    .모카::before { content: ""; position: absolute; inset: auto 2% -2%; height: 15%; border-radius: 50%; background: #412a454f; }
+    .캐릭터 { position: absolute; inset: 0; animation: 방향 14s steps(1, end) infinite; }
+    .캐릭터 span { position: absolute; }
+    .신발 { bottom: 0; width: 34%; height: 24%; border-bottom: .6cqw solid #2c3044; border-radius: 30%; background: #615575; animation: 발 .6s ease-in-out infinite alternate; }
+    .왼발 { left: 14%; }
+    .오른발 { right: 13%; animation-delay: -.6s; }
+    .코트 { inset: 42% 9% 15%; border-radius: 35% 35% 20% 20%; background: #b4d963; box-shadow: inset -.65cqw -.6cqw #759940; }
+    .목도리 { inset: 43% 8% 45%; border-radius: .5cqw; background: #ed9369; }
+    .목도리::after { content: ""; position: absolute; left: 16%; width: 24%; height: 2.2cqw; border-radius: .25cqw; background: inherit; }
+    .얼굴 { inset: 14% 14% 49%; border-radius: 35% 35% 45% 45%; background: #ffd4a7; }
+    .얼굴::after { content: ""; position: absolute; left: 57%; top: 50%; width: .6cqw; height: .7cqw; border-radius: 50%; background: #332943; box-shadow: 1.15cqw 0 #332943; }
+    .모자 { inset: 2% 10% 68%; border-bottom: .65cqw solid #85a94a; border-radius: 50% 50% 20% 20%; background: #ccec87; }
+    .모자::before { content: ""; position: absolute; top: -18%; left: 36%; width: 27%; aspect-ratio: 1; border-radius: 50%; background: #ffecac; }
+
+    @keyframes 눈 { to { transform: translateY(20%); } }
+    @keyframes 빛 { from { opacity: .72; } to { opacity: 1; } }
+    @keyframes 화면빛 { to { filter: drop-shadow(0 0 1cqw #a1e9ff); } }
+    @keyframes 흔들림 { 0%, 70%, 100% { transform: none; } 80% { transform: rotate(-9deg); } 90% { transform: rotate(6deg); } }
+    @keyframes 김 { from { opacity: 0; transform: translateY(0); } 35% { opacity: .85; } to { opacity: 0; transform: translateY(-2.4cqw); } }
+    @keyframes 주사위 { 0%, 70%, 100% { transform: none; } 84% { transform: translateY(-2cqw) rotate(19deg); } }
+    @keyframes 게임말 { 50% { transform: translateX(3cqw); } }
+    @keyframes 걷기 {
+      0%, 100% { left: 12%; bottom: 4%; }
+      25%, 75% { left: 45%; bottom: 6%; }
+      50% { left: 79%; bottom: 4%; }
+    }
+    @keyframes 방향 { 50%, 100% { transform: scaleX(-1); } }
+    @keyframes 발 { to { transform: translateY(-.85cqw) rotate(10deg); } }
+    .방.멈춤 *, .방.멈춤 *::after, .방.멈춤 *::before { animation-play-state: paused; }
+    .프로필 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .6rem;
+      margin: 0;
+    }
+    .프로필 > div {
+      padding: .75rem .9rem;
+      border: 1px solid #d9b996;
+      border-radius: .55rem;
+      background: #fffbf3;
+    }
+    .프로필 dt { font-weight: 800; color: #533747; }
+    .프로필 dd { margin: .2rem 0 0; }
+    #취미제목 { margin: 1rem 0 0; font-size: 1rem; color: #533747; }
+    @media (max-width: 42rem) {
+      .프로필 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="창제목">모카의 미니홈</div>
+    <div class="창내용">
+      <header>
+        <h1>모카의 겨울방</h1>
+        <p>안녕하세요, 모카예요! 수업에서 만나 반가워요. 여러분은 캠퍼스에서 어디를 가장 좋아하나요?</p>
+      </header>
+      <section aria-labelledby="프로필제목">
+        <h2 id="프로필제목">모카를 소개해요</h2>
+        <dl class="프로필">
+          <div><dt>별명</dt><dd>모카</dd></div>
+          <div><dt>학년</dt><dd>대학교 2학년</dd></div>
+          <div><dt>전공</dt><dd>미디어콘텐츠학과</dd></div>
+          <div><dt>성격</dt><dd>처음에는 조금 조용하지만, 좋아하는 이야기가 나오면 말이 많아져요.</dd></div>
+          <div><dt>관심 분야</dt><dd>풍경 사진과 짧은 영상 만들기. 요즘은 학교 근처에서 노을이 잘 보이는 곳을 찾고 있어요.</dd></div>
+          <div><dt>이번 학기 목표</dt><dd>수업에서 만난 친구들과 각자 좋아하는 캠퍼스 장소를 모아 짧은 영상으로 소개하고 싶어요.</dd></div>
+        </dl>
+      </section>
+      <section aria-labelledby="방제목">
+        <div class="방도구">
+          <h2 id="방제목">겨울 미니룸</h2>
+          <button type="button" id="움직임버튼">움직임 멈추기</button>
+        </div>
+        <figure class="방" role="img" aria-label="금빛 전구 아래 눈 내리는 창문, 벽에 걸린 노을 풍경 그림, 카메라와 노트북과 커피가 놓인 책상, 주사위와 말이 놓인 보드게임 탁자 앞을 모카가 걸어 다니는 방">
+          <div class="전구"></div>
+          <div class="창문"></div>
+          <div class="풍경"></div>
+          <div class="책"></div>
+          <div class="선반"></div>
+          <div class="러그"></div>
+          <div class="책상"></div>
+          <div class="게임탁자"></div>
+          <div class="게임판"></div>
+          <span class="소품 카메라">📷</span>
+          <span class="소품 노트북">💻</span>
+          <span class="소품 커피">☕</span>
+          <span class="소품 폰">♟</span>
+          <span class="소품 주사위">🎲</span>
+          <div class="모카">
+            <div class="캐릭터">
+              <span class="신발 왼발"></span>
+              <span class="신발 오른발"></span>
+              <span class="코트"></span>
+              <span class="목도리"></span>
+              <span class="얼굴"></span>
+              <span class="모자"></span>
+            </div>
+          </div>
+        </figure>
+        <h3 id="취미제목">취미</h3>
+        <ul class="취미" aria-labelledby="취미제목">
+          <li>산책하며 풍경 사진 찍기</li>
+          <li>카페에서 과제하기</li>
+          <li>친구와 보드게임 하기</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <script>
+    const 방 = document.querySelector('.방');
+    const 움직임버튼 = document.getElementById('움직임버튼');
+    const 움직임줄이기 = matchMedia('(prefers-reduced-motion: reduce)');
+
+    function 움직임설정(멈춤) {
+      방.classList.toggle('멈춤', 멈춤);
+      움직임버튼.textContent = 멈춤 ? '움직임 재생' : '움직임 멈추기';
+    }
+
+    움직임설정(움직임줄이기.matches);
+    움직임줄이기.addEventListener('change', (설정) => 움직임설정(설정.matches));
+    움직임버튼.addEventListener('click', () => 움직임설정(!방.classList.contains('멈춤')));
+  </script>
+</body>
+</html>
