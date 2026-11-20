@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>알라딘의 마법 궁전</title>
+  <link rel="stylesheet" href="brick_game.css">
+  <script src="brick_game.js" defer></script>
+</head>
+<body>
+  <main class="game">
+    <canvas id="board" width="1065" height="680" aria-label="알라딘의 마법 궁전 게임판">
+      이 브라우저에서는 게임판을 표시할 수 없습니다.
+    </canvas>
+    <div id="result" class="result" hidden>
+      <div id="result-title"></div>
+      <strong id="final-score"></strong>
+    </div>
+    <header class="scoreboard">
+      <strong class="game-title">알라딘의 마법 궁전</strong>
+      <span id="score">점수 0점</span>
+      <span id="remaining">남은 벽돌 140개</span>
+      <span id="attempts">남은 기회 3회</span>
+      <strong id="status" aria-live="polite">대기</strong>
+      <span id="instruction">스페이스키를 눌러 공을 던지세요.</span>
+    </header>
+  </main>
+</body>
+</html>

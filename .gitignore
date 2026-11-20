@@ -1,0 +1,43 @@
+# 환경 변수와 가상환경
+.env
+.env.*
+.venv/
+venv/
+env/
+ENV/
+
+# 파이썬 및 자바스크립트 캐시와 의존성 설치 결과
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+node_modules/
+
+# 빌드 및 테스트 결과
+build/
+dist/
+out/
+*.egg-info/
+.eggs/
+.coverage*
+htmlcov/
+coverage/
+
+# 로그, 편집기 설정과 임시 파일
+*.log
+logs/
+.idea/
+.vscode/
+.vs/
+*.code-workspace
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+tmp/
+temp/
+.DS_Store
+Thumbs.db
